@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { Poppins } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import Provider from '@/lib/provider';
 import { Toaster } from 'sonner';
 
-const poppins = Poppins({
+const inter = Inter({
   subsets: ['latin'],
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
 });
@@ -27,7 +27,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang='en' suppressHydrationWarning>
-      <body className={`${poppins.className}`}>
+      <body className={`${inter.className}`}>
         <Provider>
           {children} <Toaster />
         </Provider>

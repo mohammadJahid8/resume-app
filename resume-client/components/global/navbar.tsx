@@ -1,128 +1,126 @@
 'use client';
-/* eslint-disable @next/next/no-img-element */
-import {
-  Sheet,
-  SheetTrigger,
-  SheetContent,
-  SheetHeader,
-  SheetFooter,
-} from '@/components/ui/sheet';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { Facebook, Instagram, Linkedin, MenuIcon } from 'lucide-react';
 
-import { cn, scrollToSection } from '@/lib/utils';
-import Logo from './logo';
-import { menuItems } from '@/utils/constants';
 import { useState } from 'react';
-import { usePathname } from 'next/navigation';
-import { useAppContext } from '@/lib/context';
+import Link from 'next/link';
+import { Menu, X } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from '@/components/ui/navigation-menu';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
-  const path = usePathname();
-  const { user, logout } = useAppContext();
+  const [isOpen, setIsOpen] = useState(false);
 
-  return (
-    <header
-      className={cn(
-        'w-full z-40 bg-white transition-all duration-500 ease-in-out sticky top-0 left-0 right-0 shadow-[0_0_10px_rgba(0,0,0,0.1)]'
-      )}
-    >
-      <div className='w-full max-w-[1850px] mx-auto flex h-[90px] items-center px-4 nav:px-6'>
-        <Link href='/' className='flex mr-auto' prefetch={false}>
-          <Logo url='/logo-new.png' />
-        </Link>
-        <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger asChild>
-            <Button variant='ghost' size='icon' className='nav:hidden'>
-              <MenuIcon className='h-8 w-8 text-primary font-extrabold' />
-            </Button>
-          </SheetTrigger>
-          <SheetContent
-            side='left'
-            className='max-w-[300px] bg-white border-none px-[15px]'
-          >
-            <SheetHeader className='mb-10'>
-              <Logo url='/logo-new.png' />
-            </SheetHeader>
-            <div className='grid py-6'>
-              {menuItems.map((item, i) => (
-                <Link
-                  key={i}
-                  href={item.href}
-                  className={cn(
-                    'flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground pl-3',
-                    path === item.href ? 'bg-accent' : 'transparent'
-                  )}
-                  onClick={() => {
-                    if (setOpen) setOpen(false);
-                  }}
-                >
-                  <span className='mr-2 truncate'>{item.label}</span>
-                </Link>
-              ))}
+  const toggleSheet = () => setIsOpen(!isOpen);
 
-              {!user?.email ? (
-                <Link
-                  href='/login'
-                  className={cn(
-                    'flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground pl-3',
-                    path === '/login' ? 'bg-accent' : 'transparent'
-                  )}
-                  onClick={() => {
-                    if (setOpen) setOpen(false);
-                  }}
-                >
-                  <span className='mr-2 truncate'>Login</span>
-                </Link>
-              ) : (
-                <>
-                  <Button
-                    variant='special'
-                    size='special'
-                    onClick={logout}
-                    className='flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground pl-3'
-                  >
-                    Logout
-                  </Button>
-                </>
-              )}
-            </div>
-          </SheetContent>
-        </Sheet>
+  const navItems = [
+    {
+      title: 'AI Resumes & Cover Letters',
+      dropdownContent: ['Template 1', 'Template 2', 'Template 3'],
+    },
+    {
+      title: 'AI Job Search',
+      dropdownContent: ['Job Board 1', 'Job Board 2', 'Job Board 3'],
+    },
+    {
+      title: 'AI Interview Support',
+      dropdownContent: ['Guide 1', 'Guide 2', 'Guide 3'],
+    },
+    {
+      title: 'Resources',
+      href: '/resources',
+    },
+  ];
 
-        <nav className='ml-auto hidden nav:flex items-center gap-2 2lg:gap-6'>
-          {menuItems.map((item, i) => (
-            <Link
-              key={i}
-              href={item.href}
-              className='group inline-flex h-9 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-lg font-medium transition-colors duration-300 hover:bg-gray-100 hover:text-primary focus:bg-gray-100 focus:text-primary focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50'
-            >
-              {item.label}
-            </Link>
-          ))}
-
-          {!user?.email ? (
-            <Link
-              href='/login'
-              className='group inline-flex h-9 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-lg font-medium transition-colors duration-300 hover:bg-gray-100 hover:text-primary focus:bg-gray-100 focus:text-primary focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50'
-            >
-              Login
+  const NavItems = () => (
+    <>
+      {navItems.map((item, index) => (
+        <NavigationMenuItem key={index}>
+          {item.href ? (
+            <Link href={item.href} legacyBehavior passHref>
+              <NavigationMenuLink className='group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-2 lg:px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50'>
+                {item.title}
+              </NavigationMenuLink>
             </Link>
           ) : (
             <>
-              <Button
-                variant='special'
-                size='special'
-                onClick={logout}
-                className='group inline-flex h-9 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-lg font-medium transition-colors duration-300 hover:bg-gray-100 hover:text-primary focus:bg-gray-100 focus:text-primary focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50'
-              >
-                Logout
-              </Button>
+              <NavigationMenuTrigger className='px-2 lg:px-4'>
+                {item.title}
+              </NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <div className='grid gap-3 p-6 w-[400px] md:w-[500px] lg:w-[600px]'>
+                  {item?.dropdownContent?.map((content, idx) => (
+                    <div key={idx} className='text-sm'>
+                      {content}
+                    </div>
+                  ))}
+                </div>
+              </NavigationMenuContent>
             </>
           )}
-        </nav>
+        </NavigationMenuItem>
+      ))}
+    </>
+  );
+
+  return (
+    <header className='sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
+      <div className='mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6'>
+        <Link href='/' className='flex items-center space-x-2'>
+          <span className='text-lg lg:text-xl font-bold text-primary'>
+            EarnBetter
+          </span>
+        </Link>
+        <NavigationMenu className='hidden md:flex'>
+          <NavigationMenuList>
+            <NavItems />
+          </NavigationMenuList>
+        </NavigationMenu>
+        <div className='flex items-center space-x-4'>
+          <Button
+            variant='outline'
+            className='hidden md:inline-flex text-xs lg:text-sm'
+          >
+            Sign In
+          </Button>
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <SheetTrigger asChild>
+              <Button variant='outline' size='icon' className='md:hidden'>
+                <Menu className='h-6 w-6' />
+                <span className='sr-only'>Toggle navigation menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side='right' className='w-[300px] sm:w-[400px]'>
+              <nav className='flex flex-col space-y-4'>
+                <Link
+                  href='/'
+                  className='flex items-center space-x-2'
+                  onClick={toggleSheet}
+                >
+                  <span className='text-xl font-semibold'>EarnBetter</span>
+                </Link>
+                {navItems.map((item, index) => (
+                  <Link
+                    key={index}
+                    href={item.href || '#'}
+                    className='text-lg font-medium'
+                    onClick={toggleSheet}
+                  >
+                    {item.title}
+                  </Link>
+                ))}
+                <Button className='w-full'>Sign In</Button>
+              </nav>
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
     </header>
   );
