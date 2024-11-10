@@ -18,6 +18,22 @@ const ContextProvider = ({ children }: any) => {
 
   const [usersRefetch, setUsersRefetch] = useState(false);
 
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    city: '',
+    title: '',
+    state: '',
+    zip: '',
+    smsAlerts: false,
+    summary: '',
+    workExperience: '',
+    education: '',
+    skills: '',
+  });
+
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -71,6 +87,8 @@ const ContextProvider = ({ children }: any) => {
     usersRefetch,
     setUsersRefetch,
     logout,
+    formData,
+    setFormData,
   };
 
   return (

@@ -44,7 +44,7 @@ export default function Login() {
           toast.success(`Logged in`, {
             position: 'top-center',
           });
-          router.push('/');
+          router.push('/onboard/upload');
         }, 1000);
       }
     } catch (error: any) {
@@ -57,7 +57,7 @@ export default function Login() {
   };
 
   return (
-    <Auth title={'Login'} description={' '}>
+    <Auth title={'Login'} subtitle={' '}>
       <AuthForm
         inputFields={loginFields}
         onSubmit={handleSubmit}

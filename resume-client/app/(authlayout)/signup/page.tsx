@@ -70,7 +70,7 @@ export default function Signup() {
           toast.success(`Signed up`, {
             position: 'top-center',
           });
-          router.push('/');
+          router.push('/onboard/upload');
         }, 1000);
       }
     } catch (error: any) {
@@ -83,7 +83,7 @@ export default function Signup() {
   };
 
   return (
-    <Auth title={'Signup'} description={' '}>
+    <Auth title={'Signup'} subtitle={' '}>
       <AuthForm
         inputFields={registerFields}
         onSubmit={handleSubmit}

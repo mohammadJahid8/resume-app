@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Menu, X } from 'lucide-react';
+import { Menu } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -14,8 +14,10 @@ import {
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { useAppContext } from '@/lib/context';
 
 export default function Navbar() {
+  const { user, logout } = useAppContext();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleSheet = () => setIsOpen(!isOpen);
@@ -85,11 +87,17 @@ export default function Navbar() {
         </NavigationMenu>
         <div className='flex items-center space-x-4'>
           <Button
+            href={user?.email ? '/onboard/upload' : '/login'}
             variant='outline'
             className='hidden md:inline-flex text-xs lg:text-sm'
           >
-            Sign In
+            {user?.email ? 'Onboard' : 'Sign In'}
           </Button>
+          {user?.email && (
+            <Button onClick={logout} className='hidden md:inline-flex'>
+              Logout
+            </Button>
+          )}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
               <Button variant='outline' size='icon' className='md:hidden'>
@@ -109,14 +117,24 @@ export default function Navbar() {
                 {navItems.map((item, index) => (
                   <Link
                     key={index}
-                    href={item.href || '#'}
+                    href={item.href || '/'}
                     className='text-lg font-medium'
                     onClick={toggleSheet}
                   >
                     {item.title}
                   </Link>
                 ))}
-                <Button className='w-full'>Sign In</Button>
+                <Button
+                  href={user?.email ? '/onboard/upload' : '/login'}
+                  className='w-full'
+                >
+                  {user?.email ? 'Onboard' : 'Sign In'}
+                </Button>
+                {user?.email && (
+                  <Button onClick={logout} className='w-full'>
+                    Logout
+                  </Button>
+                )}
               </nav>
             </SheetContent>
           </Sheet>
