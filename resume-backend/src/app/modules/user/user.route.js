@@ -2,7 +2,7 @@ import express from 'express';
 import { UserController } from './user.controller.js';
 import auth from '../../middlewares/auth.js';
 import multer from 'multer';
-const storage = multer.diskStorage({});
+const storage = multer.memoryStorage({});
 
 const upload = multer({ storage });
 const router = express.Router();
@@ -27,6 +27,8 @@ router.patch(
 
 router.post('/forgot-password', UserController.forgotPassword);
 router.post('/reset-password', UserController.resetPassword);
+
+router.post('/upload-resume', upload.single('file'), UserController.uploadResume);
 
 
 export const UserRoutes = router;

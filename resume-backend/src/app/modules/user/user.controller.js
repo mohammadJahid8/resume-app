@@ -135,14 +135,15 @@ const resetPassword = catchAsync(async (req, res) => {
   });
 });
 
-const createSubscription = catchAsync(async (req, res) => {
-  const result = await UserService.createSubscription(req);
+
+const uploadResume = catchAsync(async (req, res) => {
+  const result = await UserService.uploadResume(req.file);
 
   sendResponse(res, {
-    statusCode: result.code || 200,
+    statusCode: 200,
     success: true,
-    message: result.message || '',
-    data: result.data || null,
+    message: 'Resume uploaded successfully!',
+    data: result,
   });
 });
 
@@ -159,5 +160,5 @@ export const UserController = {
   updateUser,
   forgotPassword,
   resetPassword,
-  createSubscription,
+  uploadResume,
 };
